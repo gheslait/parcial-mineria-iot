@@ -24,9 +24,18 @@ engine = create_engine(
     pool_pre_ping=True,      # revalida conexiones (servidor remoto)
     pool_size=5,
     max_overflow=5,
+    pool_recycle=1800,
     future=True,
-    # Fija el schema del grupo al abrir la conexión (no transaccional, robusto).
-    connect_args={"options": f"-csearch_path={_settings.db_schema_seguro},public"},
+    connect_args={
+        # Fija el schema del grupo al abrir la conexión (no transaccional).
+        "options": f"-csearch_path={_settings.db_schema_seguro},public",
+        "connect_timeout": 10,
+        # keepalives: evita que se caiga una conexión ociosa al servidor remoto
+        "keepalives": 1,
+        "keepalives_idle": 30,
+        "keepalives_interval": 10,
+        "keepalives_count": 3,
+    },
 )
 
 
