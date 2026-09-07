@@ -1,0 +1,162 @@
+table Lecturas
+	lineageTag: aaaaaaaa-0000-0000-0000-000000000100
+
+	/// --- Medidas del modelo (agrupadas en esta tabla) ---
+
+	measure 'CO Promedio (ppm)' = CALCULATE(AVERAGE(Lecturas[valor]), Lecturas[tipo_sensor] = "MQ7")
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000601
+
+	measure 'CO Máximo (ppm)' = CALCULATE(MAX(Lecturas[valor]), Lecturas[tipo_sensor] = "MQ7")
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000602
+
+	measure 'Humedad Promedio (%)' = CALCULATE(AVERAGE(Lecturas[valor]), Lecturas[tipo_sensor] = "HUM_SUELO")
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000603
+
+	measure 'Humedad Mínima (%)' = CALCULATE(MIN(Lecturas[valor]), Lecturas[tipo_sensor] = "HUM_SUELO")
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000604
+
+	measure 'Lecturas Totales' = COUNTROWS(Lecturas)
+		formatString: #,0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000605
+
+	measure '% Sospechosas' = DIVIDE(CALCULATE(COUNTROWS(Lecturas), Lecturas[calidad] <> "valida"), [Lecturas Totales])
+		formatString: 0.0%
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000606
+
+	measure 'Eventos de Riesgo' = COUNTROWS(Eventos)
+		formatString: #,0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000607
+
+	measure 'Eventos Alto/Crítico' = CALCULATE([Eventos de Riesgo], Eventos[nivel] IN {"alto", "critico"})
+		formatString: #,0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000608
+
+	measure 'Anomalías Detectadas' = COUNTROWS(Anomalias)
+		formatString: #,0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000609
+
+	measure 'Índice de Riesgo (prom)' = AVERAGE(RiesgoPorHora[riesgo_score])
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000060a
+
+	measure 'Índice de Riesgo (máx)' = MAX(RiesgoPorHora[riesgo_score])
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000060b
+
+	measure 'Nivel de Riesgo Actual' = SWITCH(TRUE(), [Índice de Riesgo (prom)] >= 75, "CRÍTICO", [Índice de Riesgo (prom)] >= 50, "ALTO", [Índice de Riesgo (prom)] >= 25, "MEDIO", "BAJO")
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000060c
+
+	column id_lectura
+		dataType: int64
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000101
+		summarizeBy: none
+		sourceColumn: id_lectura
+
+		annotation SummarizationSetBy = Automatic
+
+	column medido_en
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000102
+		summarizeBy: none
+		sourceColumn: medido_en
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000103
+		summarizeBy: none
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_del_dia
+		dataType: int64
+		formatString: 0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000104
+		summarizeBy: none
+		sourceColumn: hora_del_dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor
+		dataType: double
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000105
+		summarizeBy: average
+		sourceColumn: valor
+
+		annotation SummarizationSetBy = Automatic
+
+	column unidad
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000106
+		summarizeBy: none
+		sourceColumn: unidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column calidad
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000107
+		summarizeBy: none
+		sourceColumn: calidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_sensor
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000108
+		summarizeBy: none
+		sourceColumn: tipo_sensor
+
+		annotation SummarizationSetBy = Automatic
+
+	column magnitud
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000109
+		summarizeBy: none
+		sourceColumn: magnitud
+
+		annotation SummarizationSetBy = Automatic
+
+	column sensor
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000010a
+		summarizeBy: none
+		sourceColumn: sensor
+
+		annotation SummarizationSetBy = Automatic
+
+	column dispositivo
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000010b
+		summarizeBy: none
+		sourceColumn: dispositivo
+
+		annotation SummarizationSetBy = Automatic
+
+	column crudo
+		dataType: double
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000010c
+		summarizeBy: none
+		sourceColumn: crudo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Lecturas = m
+		mode: import
+		source =
+				let
+					Origen = PostgreSQL.Database("gheslait.com:15432", "timescaledb"),
+					Vista = Origen{[Schema="combustion_riesgo", Item="vw_lecturas_enriquecidas"]}[Data],
+					Tipos = Table.TransformColumnTypes(Vista, {{"medido_en", type datetime}, {"dia", type datetime}})
+				in
+					Tipos
+
+	annotation PBI_ResultType = Table

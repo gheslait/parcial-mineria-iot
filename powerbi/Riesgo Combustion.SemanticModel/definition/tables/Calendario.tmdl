@@ -1,0 +1,50 @@
+table Calendario
+	lineageTag: aaaaaaaa-0000-0000-0000-000000000500
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000501
+		summarizeBy: none
+		isKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año = YEAR(Calendario[Date])
+		dataType: int64
+		formatString: 0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000502
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column MesNº = MONTH(Calendario[Date])
+		dataType: int64
+		formatString: 0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000503
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes = FORMAT(Calendario[Date], "mmm yyyy")
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000504
+		summarizeBy: none
+		sortByColumn: MesNº
+
+		annotation SummarizationSetBy = Automatic
+
+	column Día = DAY(Calendario[Date])
+		dataType: int64
+		formatString: 0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000505
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calendario = calculated
+		mode: import
+		source = CALENDAR(DATE(2026, 8, 1), DATE(2026, 10, 1))
+
+	annotation PBI_Id = Calendario

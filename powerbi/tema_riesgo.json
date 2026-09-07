@@ -1,0 +1,37 @@
+{
+  "name": "Riesgo de Combustion",
+  "dataColors": [
+    "#E4572E", "#3D7DCA", "#F9A825", "#2E7D32", "#6A4C93",
+    "#00897B", "#C62828", "#5D4037", "#455A64", "#AD1457"
+  ],
+  "foreground": "#1A1A1A",
+  "foregroundNeutralSecondary": "#5A5A5A",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F4F4F4",
+  "backgroundNeutral": "#E0E0E0",
+  "tableAccent": "#E4572E",
+  "good": "#2E7D32",
+  "neutral": "#F9A825",
+  "bad": "#C62828",
+  "maximum": "#C62828",
+  "center": "#F9A825",
+  "minimum": "#2E7D32",
+  "textClasses": {
+    "title":    { "fontSize": 14, "fontFace": "Segoe UI Semibold", "color": "#1A1A1A" },
+    "header":   { "fontSize": 12, "fontFace": "Segoe UI Semibold", "color": "#1A1A1A" },
+    "callout":  { "fontSize": 28, "fontFace": "Segoe UI", "color": "#E4572E" },
+    "label":    { "fontSize": 10, "fontFace": "Segoe UI", "color": "#5A5A5A" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border":     [{ "show": true, "color": { "solid": { "color": "#E0E0E0" } }, "radius": 6 }],
+        "title":      [{ "show": true, "fontColor": { "solid": { "color": "#1A1A1A" } }, "fontSize": 12, "fontFamily": "Segoe UI Semibold" }]
+      }
+    },
+    "page": {
+      "*": { "background": [{ "color": { "solid": { "color": "#F4F4F4" } }, "transparency": 0 }] }
+    }
+  }
+}

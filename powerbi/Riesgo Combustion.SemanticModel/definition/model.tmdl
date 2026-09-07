@@ -1,0 +1,17 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-ES
+
+	annotation PBI_QueryOrder = ["Dispositivos","Lecturas","RiesgoPorHora","Eventos","Anomalias"]
+
+	annotation __PBI_TimeIntelligenceEnabled = 0
+
+	annotation PBI_ProTooling = ["DevMode"]
+
+ref table Dispositivos
+ref table Lecturas
+ref table RiesgoPorHora
+ref table Eventos
+ref table Anomalias
+ref table Calendario

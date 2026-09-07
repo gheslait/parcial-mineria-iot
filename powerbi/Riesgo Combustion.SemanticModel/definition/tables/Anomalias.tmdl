@@ -1,0 +1,90 @@
+table Anomalias
+	lineageTag: aaaaaaaa-0000-0000-0000-000000000400
+
+	column id_anomalia
+		dataType: int64
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000401
+		summarizeBy: none
+		sourceColumn: id_anomalia
+
+		annotation SummarizationSetBy = Automatic
+
+	column detectado_en
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000402
+		summarizeBy: none
+		sourceColumn: detectado_en
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000403
+		summarizeBy: none
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column metodo
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000404
+		summarizeBy: none
+		sourceColumn: metodo
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor
+		dataType: double
+		formatString: 0.00
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000405
+		summarizeBy: none
+		sourceColumn: valor
+
+		annotation SummarizationSetBy = Automatic
+
+	column score
+		dataType: double
+		formatString: 0.00
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000406
+		summarizeBy: average
+		sourceColumn: score
+
+		annotation SummarizationSetBy = Automatic
+
+	column descripcion
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000407
+		summarizeBy: none
+		sourceColumn: descripcion
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_sensor
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000408
+		summarizeBy: none
+		sourceColumn: tipo_sensor
+
+		annotation SummarizationSetBy = Automatic
+
+	column dispositivo
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000409
+		summarizeBy: none
+		sourceColumn: dispositivo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Anomalias = m
+		mode: import
+		source =
+				let
+					Origen = PostgreSQL.Database("gheslait.com:15432", "timescaledb"),
+					Vista = Origen{[Schema="combustion_riesgo", Item="vw_anomalias"]}[Data],
+					Tipos = Table.TransformColumnTypes(Vista, {{"detectado_en", type datetime}, {"dia", type datetime}})
+				in
+					Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,37 @@
+table Dispositivos
+	lineageTag: aaaaaaaa-0000-0000-0000-000000000010
+
+	column codigo
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000011
+		summarizeBy: none
+		sourceColumn: codigo
+
+		annotation SummarizationSetBy = Automatic
+
+	column ubicacion
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000012
+		summarizeBy: none
+		sourceColumn: ubicacion
+
+		annotation SummarizationSetBy = Automatic
+
+	column descripcion
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000013
+		summarizeBy: none
+		sourceColumn: descripcion
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dispositivos = m
+		mode: import
+		source =
+				let
+					Origen = PostgreSQL.Database("gheslait.com:15432", "timescaledb"),
+					Tabla = Origen{[Schema="combustion_riesgo", Item="dispositivo"]}[Data]
+				in
+					Tabla
+
+	annotation PBI_ResultType = Table

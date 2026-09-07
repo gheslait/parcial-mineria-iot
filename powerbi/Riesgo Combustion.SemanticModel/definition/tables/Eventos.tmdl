@@ -1,0 +1,107 @@
+table Eventos
+	lineageTag: aaaaaaaa-0000-0000-0000-000000000300
+
+	column id_evento
+		dataType: int64
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000301
+		summarizeBy: none
+		sourceColumn: id_evento
+
+		annotation SummarizationSetBy = Automatic
+
+	column detectado_en
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000302
+		summarizeBy: none
+		sourceColumn: detectado_en
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000303
+		summarizeBy: none
+		sourceColumn: dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column nivel
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000304
+		summarizeBy: none
+		sourceColumn: nivel
+
+		annotation SummarizationSetBy = Automatic
+
+	column score
+		dataType: double
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000305
+		summarizeBy: average
+		sourceColumn: score
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_mq7
+		dataType: double
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000306
+		summarizeBy: none
+		sourceColumn: valor_mq7
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_humedad
+		dataType: double
+		formatString: 0.0
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000307
+		summarizeBy: none
+		sourceColumn: valor_humedad
+
+		annotation SummarizationSetBy = Automatic
+
+	column estado
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000308
+		summarizeBy: none
+		sourceColumn: estado
+
+		annotation SummarizationSetBy = Automatic
+
+	column mensaje
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-000000000309
+		summarizeBy: none
+		sourceColumn: mensaje
+
+		annotation SummarizationSetBy = Automatic
+
+	column dispositivo
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000030a
+		summarizeBy: none
+		sourceColumn: dispositivo
+
+		annotation SummarizationSetBy = Automatic
+
+	column regla
+		dataType: string
+		lineageTag: aaaaaaaa-0000-0000-0000-00000000030b
+		summarizeBy: none
+		sourceColumn: regla
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Eventos = m
+		mode: import
+		source =
+				let
+					Origen = PostgreSQL.Database("gheslait.com:15432", "timescaledb"),
+					Vista = Origen{[Schema="combustion_riesgo", Item="vw_eventos"]}[Data],
+					Tipos = Table.TransformColumnTypes(Vista, {{"detectado_en", type datetime}, {"dia", type datetime}})
+				in
+					Tipos
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,31 @@
+relationship cal_lecturas
+	fromColumn: Lecturas.dia
+	toColumn: Calendario.Date
+
+relationship cal_riesgo
+	fromColumn: RiesgoPorHora.dia
+	toColumn: Calendario.Date
+
+relationship cal_eventos
+	fromColumn: Eventos.dia
+	toColumn: Calendario.Date
+
+relationship cal_anomalias
+	fromColumn: Anomalias.dia
+	toColumn: Calendario.Date
+
+relationship disp_lecturas
+	fromColumn: Lecturas.dispositivo
+	toColumn: Dispositivos.codigo
+
+relationship disp_riesgo
+	fromColumn: RiesgoPorHora.dispositivo
+	toColumn: Dispositivos.codigo
+
+relationship disp_eventos
+	fromColumn: Eventos.dispositivo
+	toColumn: Dispositivos.codigo
+
+relationship disp_anomalias
+	fromColumn: Anomalias.dispositivo
+	toColumn: Dispositivos.codigo

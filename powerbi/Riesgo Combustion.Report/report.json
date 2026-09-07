@@ -1,0 +1,30 @@
+{
+  "config": "{\"version\":\"5.55\",\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"settings\":{\"useStylableVisualContainerHeader\":true,\"exportDataMode\":1}}",
+  "layoutOptimization": 0,
+  "publicCustomVisuals": [],
+  "resourcePackages": [],
+  "sections": [
+    {
+      "name": "resumen0000000000001",
+      "displayName": "Resumen",
+      "filters": "[]",
+      "ordinal": 0,
+      "visualContainers": [],
+      "config": "{}",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "name": "detalle00000000000002",
+      "displayName": "Detalle y anomalías",
+      "filters": "[]",
+      "ordinal": 1,
+      "visualContainers": [],
+      "config": "{}",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720
+    }
+  ]
+}
