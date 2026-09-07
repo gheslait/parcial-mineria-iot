@@ -5,8 +5,6 @@
 #  Sistema de monitoreo de riesgo de combustion / incendio.
 #  Sensores del grupo: MQ7 (monoxido de carbono, ppm) y humedad de suelo (%).
 #
-#  Los datos se leen DIRECTO de PostgreSQL + TimescaleDB (sin cargar archivos
-#  a mano), igual que Power BI.
 #
 #  Ejecutar:  streamlit run app.py
 # ============================================================================
@@ -50,8 +48,7 @@ def config(clave, defecto=None):
 # ---------------------------------------------------------------------------
 st.title("Analisis Exploratorio de Datos - Riesgo de Combustion")
 st.write(
-    "Datos de los sensores **MQ7** (monoxido de carbono) y **humedad de suelo**, "
-    "leidos directamente de PostgreSQL + TimescaleDB."
+    "Datos de los sensores **MQ7** (monoxido de carbono) y **humedad de suelo**."
 )
 
 DATABASE_URL = config("DATABASE_URL")
